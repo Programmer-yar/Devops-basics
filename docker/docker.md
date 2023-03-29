@@ -20,6 +20,8 @@ These notes are based on [this](https://www.youtube.com/watch?v=3c-iBn73dDE&list
 - [Read more](https://www.ibm.com/topics/containers) about containers
 - We can start containers for 2 different versions of the same application
 - Container can be described as a virtual environment running on a machine
+- Containers do not persist data. If a database container is restarted it won't have any data/configurations from previous session
+    - But there is a service called `Docker Volumes` for data persistancy
 
 ### Container storage/location
 - Can be stored in public or private repositories
@@ -102,3 +104,58 @@ docker exec -it thirsty_goodall /bin/bash
 - skipping practical of section `Developing with Containers` at 1:10:08
 
 ## Docker compose
+- Docker compose is installed alongwith docker, in some cases it needs separate installation
+- Always starting containers and attaching them to network manually is tedious we can automate this process using Docker Compose
+- Example of manual command:
+    ```
+    docker run -d \
+    --name mongodb \
+    -p 27017:27017 \
+    - e MONGO-INITDB-ROOT_USERNAME=admin \
+    - e MONGO-INITDB-ROOT_USERNAME=password \
+
+    --net mongo-network \
+    mongo
+    ```
+    ```
+    docker run -d \
+    --name mongo-express \
+    -p 8080:8080 \
+    - e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+    - e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
+    - e ME_CONFIG_MONGODB_SERVER=mongo \
+
+    --net mongo-network \
+    mongo-express
+    ```
+- Example of Docker compose
+    ```
+    version:'3'  (version of Docker compose)
+    services:
+        mongodb  (container name)
+            image:mongo
+            ports:
+                - 27017:27017  (HOST:CONTAINER)(port binding)
+            environment:
+                - MONGO-INITDB-ROOT_USERNAME=admin
+                - MONGO-INITDB-ROOT_USERNAME=password
+        mongo-express
+            image:mongo-express
+            ports:
+                - 8080:8080
+            environment:
+                - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+                - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+                - ME_CONFIG_MONGODB_SERVER=mongo
+    ```
+- Docker Compose takes care of creating Common Network so we don't need to specify network
+
+- Save the configurations in `.yaml` file. To start the network container with docker compose use
+```
+docker-compose -f <file_name.yaml> up
+```
+
+- Stop the containers
+```
+docker-compose -f <file_name.yaml> down
+```
