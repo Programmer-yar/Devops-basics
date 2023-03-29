@@ -41,12 +41,40 @@ Let's say we downloaded different version images of the same application like re
     - The running containers on host machine are connected to host machine through ports, a container listening on port 3000 can bind with host machine port 3000. But if there are 2 containers listening on port 3000 then they can not interact/bind with host machine on port 3000, because host machine has only one port 3000. one of the containers need to bind at port 3001 or some different port.
 - ![ports-binding-image](../images/port-binding.png)
 
+#### Specifying port binding on container start
+- `docker run -p<hosting-machine-port>:<container-port> <image-name>`
+    - For example: `docker run -p6000:6379 redis`
+
 ## Docker Commands
 - See all existing images `docker images`
 - See all running containers `docker ps`
-- Run the container in:
+- Create/Run the from an image in:
     - attached mode `docker run <image_name>` (will run in terminal and can be ended by `Ctrl + c`)
     - detached mode `docker run -d <image_name>`
 - Stop the container using `docker stop <Container ID>`
 - Start the container `docker start <Conatiner ID>`
+    - container will retain configurations defined at the time of docker run
 - Get the history of all the containers (ID, Status) `docker ps -a`
+- Remove image with certain ID `docker rmi <IMAGE ID>`
+
+### Debugging
+- Check the logs of a container
+```
+docker logs <container ID>
+or
+docker logs <container Name>
+```
+
+- Name the container on run:
+```
+docker run -d -p<host-port>:<container-port> --name <custom_name> <image-name>:<version>
+docker run -d -p6000:6379 --name lovely-redis redis:6
+```
+
+- Connect to terminal of container to check configuration file/logs:
+```
+docker exec -it <container ID/Name> /bin/bash
+docker exec -it thirsty_goodall /bin/bash
+```
+
+## Docker Network
