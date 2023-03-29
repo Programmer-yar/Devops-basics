@@ -15,7 +15,10 @@
 - makes development and deployment more efficient.
 - Also has port binding, e.g port 5432 associated with postgres container
 - Containers can also be created without docker
+- When we search for an artifact on DockerHub we are searching for an image not a container. Container can be called a running environment of an image.
 - [Read more](https://www.ibm.com/topics/containers) about containers
+- We can start containers for 2 different versions of the same application
+- Container can be described as a virtual environment running on a machine
 
 ### Container storage/location
 - Can be stored in public or private repositories
@@ -30,3 +33,20 @@
     - no need to install binaries or dependencies
     - containers have their own isolated environment
     - They are packaged with all needed configuration
+
+### Containers for different versions of same application
+Let's say we downloaded different version images of the same application like redis.
+- When we run them they run in different containers but same port, how do we connect with them if both are running on same port?
+    - In that case we use port binding
+    - The running containers on host machine are connected to host machine through ports, a container listening on port 3000 can bind with host machine port 3000. But if there are 2 containers listening on port 3000 then they can not interact/bind with host machine on port 3000, because host machine has only one port 3000. one of the containers need to bind at port 3001 or some different port.
+- ![ports-binding-image](../images/port-binding.png)
+
+## Docker Commands
+- See all existing images `docker images`
+- See all running containers `docker ps`
+- Run the container in:
+    - attached mode `docker run <image_name>` (will run in terminal and can be ended by `Ctrl + c`)
+    - detached mode `docker run -d <image_name>`
+- Stop the container using `docker stop <Container ID>`
+- Start the container `docker start <Conatiner ID>`
+- Get the history of all the containers (ID, Status) `docker ps -a`
