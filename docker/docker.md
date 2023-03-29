@@ -1,4 +1,5 @@
 # Docker
+These notes are based on [this](https://www.youtube.com/watch?v=3c-iBn73dDE&list=PLkeYVSQZTUZYzBtuUu-49LAr8gI1eNALn&index=9&t=3140s) youtube tutorial 
 
 ## Container
 - A way to package application with all the necessary dependencies and configurations.
@@ -78,3 +79,26 @@ docker exec -it thirsty_goodall /bin/bash
 ```
 
 ## Docker Network
+- An isolated network which contains docker containers
+    - containers can communicate with each other just by using container name
+    - applications from host can communicate using port number
+    - For example: A docker network may comprise of node.js application, MongoDb, Mongo Express UI
+    - Get the list of docker networks: `docker network ls`
+    - See useful commands for related to an image on Docker hub
+    - Example command:
+        ```
+        docker run -d \
+        --network web_default \
+        --name mongo-express \
+        -p 8081:8081 \
+        -e ME_CONFIG_OPTIONS_EDITORTHEME="ambiance" \
+        -e ME_CONFIG_MONGODB_SERVER="web_db_1" \
+        -e ME_CONFIG_BASICAUTH_USERNAME="user" \
+        -e ME_CONFIG_BASICAUTH_PASSWORD="fairly long password" \
+        mongo-express
+        ```
+    - `-e` stands for environment variable
+- we can manually create containers, configure their environment variable and add them to network or use docker compose (next section)
+- skipping practical of section `Developing with Containers` at 1:10:08
+
+## Docker compose
