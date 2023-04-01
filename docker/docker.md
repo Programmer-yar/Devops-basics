@@ -58,6 +58,7 @@ Let's say we downloaded different version images of the same application like re
 - Start the container `docker start <Conatiner ID>`
     - container will retain configurations defined at the time of docker run
 - Get the history of all the containers (ID, Status) `docker ps -a`
+- Remove container with certain ID `docker rm <container ID>`
 - Remove image with certain ID `docker rmi <IMAGE ID>`
 
 ### Debugging
@@ -159,3 +160,22 @@ docker-compose -f <file_name.yaml> up
 ```
 docker-compose -f <file_name.yaml> down
 ```
+    - also deletes network
+
+## Dockerfile
+- Basically a blueprint for building images
+- Used to create custom Docker image of our application e.g Django, Node.js etc
+- We push our code to github, on CI **jenkins** packages it into a Dockerfile
+- See example docker file [here](../example-docker-files/Dockerfile)
+- Environment variables can be defined in Dockerfile but it's recommended to define them in docker compose, so, that change can be made easily
+- Dockerfile syntaxt:
+    - `FROM python:3.10.2` -- define base image for the image
+    - `RUN mkdir test` -- RUN allows to run linux commands
+    - Check sample Docker file [here](../example-docker-files/Dockerfile)
+- image file should always be called `Dockerfile`
+- To build image from `Dockerfile`:
+    - `docker build -t <image_name>:<version> <path-to-Dockerfile>`
+        `-t` used to give image_name & version
+    - For example: `docker build -t my-app:1.0 .`
+
+- If an image is build once and you make changes to Dockerfile, the image needs to be built again
